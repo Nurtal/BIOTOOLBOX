@@ -4,6 +4,11 @@ place for work in progress
 and crazy ideas
 """
 
+
+### IDEAS
+## => reformat file
+## => replace whitespace by underscore in file_name
+
 import shutil
 import subprocess
 
@@ -80,13 +85,44 @@ def detect_file_format(data_file_name):
 	## Exit The programm with a warning message
 	else:
 		print "[!] Less than 2 lines in the file"+str(data_file_name)+", can't run an analysis\n"
+		return best_separator
 
 
 
 
-def change_file_format():
+def change_file_format(data_file_name, separator):
 	"""
+	-> Change the separator used in data_file_name, to separator
+	=> TODO:
+		- deal with extension in the output file name
+	[IN PROGRESS]
 	"""
+
+	## Get current separator
+	current_separator = detect_file_format(data_file_name)
+	if(current_separator != "undef"):
+		
+		## Re-write file with new separator
+		output_file_name = data_file_name.split(".")
+		output_file_name = output_file_name[0]
+		output_file_name = str(output_file_name)+"_reformated.tmp"
+
+		input_data_file = open(data_file_name, "r")
+		output_data_file = open(output_file_name, "w")
+		for line in input_data_file:
+			line_to_write = line.replace(current_separator, separator)
+			output_data_file.write(line_to_write)
+		output_data_file.close()
+		input_data_file.close()
+
+		# Exit The programm with a validation message
+		print "[*] File "+str(data_file_name)+" have been formated, from "+str(current_separator)+ " To "+str(separator)+" separator\n"
+
+	## Exit The programm with a warning message
+	else:
+		print "[!] Can't determine the separator used in "+str(data_file_name)+", can't reformat file\n"
+
+
 
 
 
@@ -95,3 +131,4 @@ def change_file_format():
 ### TEST SPACE ###
 #sep = detect_file_format("play.txt")
 #print sep
+change_file_format("play.txt", ";")
