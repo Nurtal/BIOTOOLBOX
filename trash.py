@@ -125,10 +125,53 @@ def change_file_format(data_file_name, separator):
 
 
 
+def fix_file_name(input_file_name):
+	"""
+	-> for all the spaces and dots in 
+	   the wild biology file name ...
+
+	IN PROGRESS
+	"""
+
+	## Make sure the file exist
+
+	## Scan for multiple dots in file name
+	input_file_name_in_array = input_file_name.split(".")
+	output_file_name = ""
+	if(len(input_file_name_in_array) > 2):
+		
+		## Deal with multiple dots in file name
+		for element in input_file_name:
+			output_file_name += str(element)+"_"
+		output_file_name = output_file_name[:-1]
+
+		## get file extension
+		file_extension = input_file_name.split(".")
+		file_extension = file_extension[-1]
+
+		output_file_name += "."+str(extension)
+
+		## replace spaces and dots by underscores
+		output_file_name = input_file_name.replace(" ", "_")
+
+	elif(len(input_file_name_in_array) == 2):
+		output_file_name = input_file_name_in_array[0]
+	else:
+		print "[!] It appears that the input file have no extensions ... "
+
+	## get file extension
+	file_extension = input_file_name.split(".")
+	file_extension = file_extension[-1]
+
+	
+
+
+
 
 
 
 ### TEST SPACE ###
 #sep = detect_file_format("play.txt")
 #print sep
-change_file_format("play.txt", ";")
+#change_file_format("play.txt", ";")
+fix_file_name("play.csv.old.csv")
