@@ -25,7 +25,6 @@ def write_lda_report(report_file):
 	output_file.write("\\begin{document}\n\\maketitle\n")
 
 
-
 	## Write overview section
 	## TODO: Adapt to the number of figures
 	## TODO: Write some informations from files
@@ -39,10 +38,12 @@ def write_lda_report(report_file):
 	for image in list_of_scatterplot:
 		image = image.split(".")
 		image = image[0]
-		output_file.write("\\includegraphics[scale=0.5]{\""+str(image)+"\"}\\\n")
+		output_file.write("\\includegraphics[scale=0.5]{\""+str(image)+"\"}\\\\\n")
 	output_file.write("\\end{tabular}\n")
 
-	## [TODO: Adapt to the number of figures]
+	## [IN PROGRESS: Write some informations from files]
+
+	## [IN PROGRESS: Adapt to the number of figures]
 	"""
 	if(len(list_of_scatterplot) == 1):
 		output_file.write("\\begin{tabular}{c}\n")
@@ -65,16 +66,22 @@ def write_lda_report(report_file):
 	for image in list_of_LDA:
 		image = image.split(".")
 		image = image[0]
-		output_file.write("\\includegraphics[scale=0.5]{\""+str(image)+"\"}\\\n")
+		output_file.write("\\includegraphics[scale=0.5]{\""+str(image)+"\"}\\\\\n")
 	output_file.write("\\end{tabular}\n")
 
 	output_file.write("\\end{center}\n")
 
 
+	## Write Representation section
+	output_file.write("\\section{2D representation}\n")
+	output_file.write("\\begin{center}\n")
+	output_file.write("\\begin{tabular}{c}\n")
+	output_file.write("\\includegraphics[scale=0.5]{\"output/images/LDA_visualisation\"}\\\\\n")
+	output_file.write("scatterplot of the best two discriminant functions\n")
+	output_file.write("\\end{tabular}\n")
+	output_file.write("\\end{center}\n")
 
 
-
-    
    	## Write footer
    	output_file.write("\\end{document}")
 	output_file.close()
