@@ -7,10 +7,12 @@ and crazy ideas
 
 ### IDEAS
 ## => reformat file
-## => replace whitespace by underscore in file_name
+## => replace whitespace by underscore in file_name [DONE]
 
 import shutil
 import subprocess
+import os.path
+import platform
 
 
 def detect_file_format(data_file_name):
@@ -125,53 +127,87 @@ def change_file_format(data_file_name, separator):
 
 
 
-def fix_file_name(input_file_name):
+def fix_file_name(input_file):
 	"""
-	-> for all the spaces and dots in 
+	-> for all the spaces and dots in
 	   the wild biology file name ...
-
-	IN PROGRESS
+	-> Deal with path on Windows and Linux, treat onlu the file name
+	-> convert dots and spaces in file
+	-> copy the input_file with to a file with a valid file name
 	"""
 
 	## Make sure the file exist
+	if(os.path.exists(input_file)):
 
-	## Scan for multiple dots in file name
-	input_file_name_in_array = input_file_name.split(".")
-	output_file_name = ""
-	if(len(input_file_name_in_array) > 2):
+		## Separate file name from file path
+		input_file_path = ""
+		folder_separator = "/"
+		if(platform.system() == "Windows"):
+			folder_separator = "\\"
+		elif(platform.system == "Linux"):
+			folder_separator = "/"
 		
-		## Deal with multiple dots in file name
-		for element in input_file_name:
-			output_file_name += str(element)+"_"
-		output_file_name = output_file_name[:-1]
+		input_file_name_path_in_array = input_file.split(folder_separator)
+		input_file_name = input_file_name_path_in_array[-1]
 
-		## get file extension
-		file_extension = input_file_name.split(".")
-		file_extension = file_extension[-1]
+		if(len(input_file_name_path_in_array) > 1):
+			for folder in input_file_name_path_in_array[:-1]:
+				input_file_path += str(folder) + folder_separator
 
-		output_file_name += "."+str(extension)
+		## Scan for multiple dots in file name
+		input_file_name_in_array = input_file_name.split(".")
+		output_file_name = ""
+		if(len(input_file_name_in_array) > 2):
+			
+			## Deal with multiple dots in file name
+			for element in input_file_name_in_array[:-1]:
+				output_file_name += str(element)+"_"
+			output_file_name = output_file_name[:-1]
 
-		## replace spaces and dots by underscores
-		output_file_name = input_file_name.replace(" ", "_")
+			## get file extension
+			file_extension = input_file_name_in_array[-1]
 
-	elif(len(input_file_name_in_array) == 2):
-		output_file_name = input_file_name_in_array[0]
+			## replace spaces and dots by underscores
+			output_file_name = output_file_name.replace(" ", "_")
+			output_file_name = output_file_name.replace(".", "_")
+
+			## init output filename
+			output_file_name += "."+str(file_extension)
+
+		elif(len(input_file_name_in_array) == 2):
+
+			## get file extension
+			file_extension = input_file_name_in_array[-1]
+			
+			## init output filename
+			output_file_name = input_file_name_in_array[0]
+			output_file_name += "."+str(file_extension)
+
+			## replace spaces and dots by underscores
+			output_file_name = output_file_name.replace(" ", "_")
+
+		else:
+			print "[!] It appears that the input file have no extensions ... "
+
+		## Finalise output file name
+		output_file_name = str(input_file_path) + str(output_file_name)
+		
+		## Check if input file is a valid file name
+		## if not copy make a copy of the file with a valid file name.
+		if(str(output_file_name) == str(input_file)):
+			print "[*] "+str(input_file) +" appears to be a valid file name"
+		else:
+			print "[*] Create a copy of "+str(input_file) +" \n[~] with the name: "+str(output_file_name)
+			shutil.copy(input_file, output_file_name)
 	else:
-		print "[!] It appears that the input file have no extensions ... "
-
-	## get file extension
-	file_extension = input_file_name.split(".")
-	file_extension = file_extension[-1]
+		print "[!] Can't find file "+str(input_file)
+		
 
 	
-
-
-
-
 
 
 ### TEST SPACE ###
 #sep = detect_file_format("play.txt")
 #print sep
 #change_file_format("play.txt", ";")
-fix_file_name("play.csv.old.csv")
+#fix_file_name("test/play.wth.reformated.csv")
