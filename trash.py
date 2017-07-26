@@ -8,11 +8,15 @@ and crazy ideas
 ### IDEAS
 ## => reformat file
 ## => replace whitespace by underscore in file_name [DONE]
+## => Check and install needed python modules & R packages
+
 
 import shutil
 import subprocess
 import os.path
 import platform
+import os
+import glob
 
 
 def detect_file_format(data_file_name):
@@ -203,7 +207,17 @@ def fix_file_name(input_file):
 		print "[!] Can't find file "+str(input_file)
 		
 
-	
+def clean():
+	"""
+	IN PROGRESS
+	"""
+
+	## Clean images
+	images_files = glob.glob("output/images/*.png")
+	for element in images_files:
+		os.remove(element)
+
+
 
 
 ### TEST SPACE ###
@@ -211,3 +225,4 @@ def fix_file_name(input_file):
 #print sep
 #change_file_format("play.txt", ";")
 #fix_file_name("test/play.wth.reformated.csv")
+clean()
